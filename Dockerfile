@@ -2,13 +2,12 @@ FROM ubuntu:22.04
 
 WORKDIR /app
 
-RUN apt update -y && \
-    apt install python3 py3-pip -y
+RUN apt update && \
+    apt install python3 python3-pip -y
 
 COPY . .
 
-RUN pip3 install poetry && \
-    poetry install
+RUN pip3 install poetry 
 
 RUN poetry config --local virtualenvs.in-project true && poetry install
 
