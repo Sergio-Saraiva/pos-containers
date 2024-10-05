@@ -21,7 +21,7 @@ jobs:
           git config --global user.email "<>"
 
       - name: Build docker image
-        run: docker build -t pos-python-container-${{ github.sha }}
+        run: docker build -t pos-python-container-${{ github.sha }} .
 
       - name: Setup doctl
         uses: digitalocean/action-doctl@v2
