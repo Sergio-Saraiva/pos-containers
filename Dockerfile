@@ -10,6 +10,6 @@ COPY . .
 RUN pip3 install poetry && \
     poetry install
 
-EXPOSE 80
+RUN poetry config --local virtualenvs.in-project true && poetry install
 
-CMD streamlit run web.py
+CMD ./init.sh

@@ -5,6 +5,7 @@ on:
     branches:
       - "feat"
       - "main"
+      - "master"
 
 jobs:
   build:
@@ -64,5 +65,5 @@ jobs:
             echo "${{ secrets.DOC_TOKEN }}" | docker login registry.digitalocean.com -u ${{ secrets.DOC_EMAIL }} --password-stdin
             echo "docker pull registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}"
             docker pull registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
-            echo "docker run -d -p 80:80 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}"
-            docker run -d -p 80:80 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
+            echo "docker run -d -p 80:8501 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}"
+            docker run -d -p 80:8501 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
