@@ -12,57 +12,57 @@ jobs:
 
     steps:
       - name: Checkout code
-      uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       - name: Setup git config
-      run: |
-        git config --global user.name "GitHub Action Bot"
-        git config --global user.email "<>"
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "<>"
 
       - name: Build docker image
-      run: docker build -t pos-python-container-${{ github.sha }}
+        run: docker build -t pos-python-container-${{ github.sha }}
 
       - name: Setup doctl
-      uses: digitalocean/action-doctl@v2
-      with:
-        token: ${{ secrets.DOC_TOKEN }}
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DOC_TOKEN }}
       
       - name: Login to Digital Ocean Container Registry
-      run: doctl registry login
+        run: doctl registry login
 
       - name: Tag docker image
-      run: docker tag pos-python-container-${{ github.sha }} registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha }}
+        run: docker tag pos-python-container-${{ github.sha }} registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha }}
 
       - name: Display docker tag
-      run: echo pos-python-container-${{ github.sha }}
+        run: echo pos-python-container-${{ github.sha }}
 
       - name: Display docker image registry tag
-      run: echo registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
+        run: echo registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
       
       - name: Push docker image to Container registry
-      run: docker push registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
+        run: docker push registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Setup Digital Ocean firewall
-      uses: earthpyy/setup-digitalocean-firewall@v1
-      with:
-        access-token: ${{ secrets.DOC_TOKEN }}
-        firewall-id: ${{ secrets.DOC_FIREWALL_ID }}
-        ports: "22/tcp"
+        uses: earthpyy/setup-digitalocean-firewall@v1
+        with:
+          access-token: ${{ secrets.DOC_TOKEN }}
+          firewall-id: ${{ secrets.DOC_FIREWALL_ID }}
+          ports: "22/tcp"
       
       - name: SSH to Digital Ocean Droplet
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.DROPLET_IP }}
-        username: ${{ secrets.DROPLET_USER }}
-        key: ${{ secrets.DROPLET_SSH_KEY }}
-        port: 22
-        scipt: |
-          echo "${{ secrets.DOC_TOKEN }}" | docker login registry.digitalocean.com -u ${{ secrets.DOC_EMAIL }} --password-stdin
-          echo "docker pull registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}"
-          docker pull registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
-          echo "docker run -d -p 80:80 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}"
-          docker run -d -p 80:80 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          port: 22
+          scipt: |
+            echo "${{ secrets.DOC_TOKEN }}" | docker login registry.digitalocean.com -u ${{ secrets.DOC_EMAIL }} --password-stdin
+            echo "docker pull registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}"
+            docker pull registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
+            echo "docker run -d -p 80:80 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}"
+            docker run -d -p 80:80 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
