@@ -60,9 +60,8 @@ jobs:
           host: ${{ secrets.DROPLET_IP }}
           username: ${{ secrets.DOC_USER }}
           key: ${{ secrets.DROPLET_SSH_KEY }}
-          passphrase: ""
           port: 22
-          scipt: |
+          script: |
             echo "${{ secrets.DOC_TOKEN }}" | docker login registry.digitalocean.com -u ${{ secrets.DOC_EMAIL }} --password-stdin
             echo "docker pull registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}"
             docker pull registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}
