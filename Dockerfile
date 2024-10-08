@@ -9,7 +9,7 @@ COPY . .
 
 RUN pip3 install poetry 
 
-RUN poetry config --local virtualenvs.in-project true
+RUN poetry config --local virtualenvs.in-project true && poetry install
 
 SHELL ["/bin/bash", "-c"] 
 
