@@ -11,10 +11,4 @@ RUN pip3 install poetry
 
 RUN poetry config --local virtualenvs.in-project true && poetry install
 
-SHELL ["/bin/bash", "-c"] 
-
-RUN source .venv/bin/activate
-
-RUN pip install streamlit python-docx openpyxl
-
-CMD ["streamlit" "run" "web.py"]
+CMD ./init.sh
