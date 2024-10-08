@@ -23,9 +23,6 @@ jobs:
       - name: Build docker image
         run: docker build -t pos-python-container-${{ github.sha }} .
 
-      - name: Display doc token
-        run: echo ${{ secrets.DOC_TOKEN }}
-
       - name: Setup doctl
         uses: digitalocean/action-doctl@v2
         with:
@@ -61,8 +58,9 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DROPLET_IP }}
-          username: ${{ secrets.DROPLET_USER }}
+          username: ${{ secrets.DOC_USER }}
           key: ${{ secrets.DROPLET_SSH_KEY }}
+          passphrase: ""
           port: 22
           scipt: |
             echo "${{ secrets.DOC_TOKEN }}" | docker login registry.digitalocean.com -u ${{ secrets.DOC_EMAIL }} --password-stdin
