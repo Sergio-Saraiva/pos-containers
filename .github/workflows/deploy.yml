@@ -62,7 +62,7 @@ jobs:
           key: ${{ secrets.DROPLET_SSH_KEY }}
           port: 22
           debug: true
-          passphrase: " "
+          passphrase: \n
           script: |
             echo "${{ secrets.DOC_TOKEN }}" | docker login registry.digitalocean.com -u ${{ secrets.DOC_EMAIL }} --password-stdin
             echo "docker pull registry.digitalocean.com/pos-containers/pos-python-container-${{ github.sha}}"
