@@ -10,5 +10,5 @@ COPY . .
 RUN pip3 install poetry 
 
 RUN poetry config --local virtualenvs.in-project true && poetry install
-RUN ["chmod", "+x", "/usr/src/app/init.sh"]
+RUN ["chmod", "+x", "./init.sh"]
 CMD ./init.sh
