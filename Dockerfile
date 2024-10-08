@@ -11,4 +11,6 @@ RUN pip3 install poetry
 
 RUN poetry config --local virtualenvs.in-project true && poetry install
 
-CMD ./init.sh
+RUN source .venv/bin/activate
+
+CMD ["streamlit" "run" "web.py"]
