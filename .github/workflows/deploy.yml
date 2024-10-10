@@ -71,7 +71,7 @@ jobs:
             docker stop pos-python-container || true
             echo "docker rm pos-python-container || true"
             docker rm pos-python-container || true
-            echo "docker run -d -p 8501:80 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container:${{ github.sha}}"
-            docker run -d -p 8501:80 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container:${{ github.sha}}
+            echo "docker run -d -p 80:8501 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container:${{ github.sha}}"
+            docker run -d -p 80:8501 --name pos-python-container registry.digitalocean.com/pos-containers/pos-python-container:${{ github.sha}}
             echo "docker image prune -a -f"
             docker image prune -a -f
